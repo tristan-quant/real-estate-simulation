@@ -2,70 +2,73 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <title>맨션맨 투자 시뮬레이터 (Pro / 오프라인)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>맨션맨 투자 시뮬레이터 (Pro)</title>
   <style>
-    /* 시스템 폰트만 사용 – 외부 폰트 없음 (아이폰 텍스트 깨짐 방지) */
-    :root {
-      --bg:#0f172a; --card:#111827; --muted:#94a3b8; --text:#e5e7eb; --accent:#22c55e; --danger:#ef4444; --line:#1f2937;
+    :root{
+      --bg:#ffffff; --ink:#111827; --muted:#6b7280; --line:#e5e7eb;
+      --card:#ffffff; --accent:#8B0000; --accent-ink:#ffffff;
+      --soft:#f9fafb; --pill:#f1f5f9;
     }
-    * { box-sizing: border-box; }
-    html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","맑은 고딕",Arial,sans-serif; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 16px; }
-    h1 { font-size: 20px; margin: 8px 0 16px; letter-spacing: -0.2px; }
-    .sub { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
-    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
-    .card h2 { font-size: 16px; margin: 0 0 10px; }
-    label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
-    .row { display:flex; gap:10px; }
-    .row > div { flex:1; }
-    input[type="number"],
-    input[type="text"] {
-      width: 100%; padding: 12px 12px; border-radius: 10px; border:1px solid var(--line); background:#0b1220; color:var(--text);
-      font-size:16px;
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink);
+      font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","맑은 고딕",Arial,sans-serif;}
+    .wrap{ max-width:980px; margin:0 auto; padding:18px; }
+    h1{ font-size:20px; margin:4px 0 10px; letter-spacing:-0.2px; }
+    .sub{ color:var(--muted); font-size:12px; margin-bottom:16px; }
+    .grid{ display:grid; grid-template-columns:1fr; gap:12px; }
+    @media (min-width: 820px){ .grid{ grid-template-columns: 1fr 1fr; } }
+    .card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; }
+    .card h2{ font-size:16px; margin:0 0 10px; }
+    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+    .row{ display:flex; gap:10px; }
+    .row > div{ flex:1; }
+    input[type="text"], input[type="number"]{
+      width:100%; padding:11px 12px; border-radius:10px; border:1px solid var(--line);
+      background:#fff; color:var(--ink); font-size:16px;
     }
-    input::placeholder { color:#64748b; }
-    .hint { font-size:11px; color:#93a1b5; margin-top:6px; }
-    .btns { display:flex; gap:10px; margin-top:10px; }
-    button {
-      appearance: none; border:0; padding: 12px 14px; border-radius: 10px; font-weight:600; cursor:pointer;
+    input::placeholder{ color:#94a3b8; opacity:.6; } /* 반투명 예시 */
+    .pill{ display:inline-flex; align-items:center; gap:8px; background:var(--pill); color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:6px 10px; font-size:12px; }
+    .hint{ font-size:11px; color:#64748b; margin-top:6px; }
+    .btns{ display:flex; gap:10px; margin-top:12px; }
+    button{ appearance:none; border:0; padding:12px 14px; border-radius:10px; font-weight:600; cursor:pointer; }
+    .primary{ background:var(--accent); color:var(--accent-ink); }
+    .ghost{ background:transparent; color:var(--ink); border:1px solid var(--line); }
+    .kpi{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+    @media (min-width: 820px){ .kpi{ grid-template-columns: repeat(4, 1fr); } }
+    .item{ background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:10px; }
+    .label{ font-size:11px; color:var(--muted); }
+    .val{ font-size:16px; margin-top:4px; }
+    .sep{ height:1px; background:var(--line); margin:12px 0; }
+    .footer{ color:#6b7280; font-size:11px; margin-top:14px; }
+    .tag{ color:var(--accent); font-weight:700; }
+    .toggle{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{
+      border:1px solid var(--line); padding:6px 10px; border-radius:999px; font-size:12px; cursor:pointer; user-select:none;
+      display:inline-flex; align-items:center; gap:6px; background:var(--pill);
     }
-    .primary { background: var(--accent); color:#062b17; }
-    .ghost { background: transparent; color: var(--text); border:1px solid var(--line); }
-    .danger { background: var(--danger); color: #2b0a0a; }
-    .result { font-size:15px; line-height:1.6; }
-    .result .k { color: var(--muted); font-size:12px; }
-    .kpi { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:8px; }
-    @media (min-width: 720px) { .kpi { grid-template-columns: repeat(4, 1fr); } }
-    .kpi .item { background:#0b1220; border:1px solid var(--line); border-radius:10px; padding:10px; }
-    .kpi .item .label { font-size:11px; color:var(--muted); }
-    .kpi .item .val { font-size:16px; margin-top:4px; }
-    .footer { color:#7b879a; font-size:11px; margin-top:14px; }
-    .sep { height:1px; background:var(--line); margin:12px 0; }
+    .chip input{ appearance:none; width:14px; height:14px; border:2px solid var(--accent); border-radius:50%; display:inline-block; position:relative; }
+    .chip input:checked{ background:var(--accent); border-color:var(--accent); }
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>맨션맨 투자 시뮬레이터 (Pro)</h1>
-    <div class="sub">오프라인 동작 · 아이폰/사파리 호환 · 외부 폰트/라이브러리 없음</div>
+    <div class="sub">오프라인 동작 · 외부 라이브러리/폰트 없음 · 상환방식: 원금균등</div>
 
     <div class="grid">
+      <!-- 입력 -->
       <div class="card">
         <h2>기본 입력</h2>
+
         <div class="row">
           <div>
             <label>매입가 (엔)</label>
-            <input id="purchasePrice" type="text" inputmode="numeric" pattern="[0-9,]*" placeholder="예) 100,000,000" />
-            <div class="hint">쉼표(,) 입력 가능</div>
+            <input id="purchasePrice" type="text" inputmode="numeric" pattern="[0-9,¥]*" placeholder="예) 100,000,000" />
           </div>
           <div>
-            <label>LTV (대출비율, %)</label>
-            <input id="ltv" type="text" inputmode="decimal" placeholder="예) 60" />
-            <div class="hint">예: 60 → 매입가의 60% 대출</div>
+            <label>대출 LTV (%)</label>
+            <input id="ltv" type="text" inputmode="decimal" placeholder="예) 70" />
           </div>
         </div>
 
@@ -75,32 +78,49 @@
             <input id="rate" type="text" inputmode="decimal" placeholder="예) 2.0" />
           </div>
           <div>
-            <label>대출기간 (년)</label>
-            <input id="years" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="예) 25" />
+            <label>상환기간 선택</label>
+            <div class="toggle" role="radiogroup" aria-label="상환기간">
+              <label class="chip"><input type="radio" name="term" value="25" checked> 분양 신축 25년</label>
+              <label class="chip"><input type="radio" name="term" value="20"> 중고맨션 20년</label>
+            </div>
+            <div class="hint">※ 신축 25년 선택 시 취득세 계산에 <b>1,200만 엔 공제</b> 자동 반영</div>
           </div>
         </div>
 
         <div class="row">
           <div>
-            <label>Cap Rate (캡레이트, %)</label>
-            <input id="cap" type="text" inputmode="decimal" placeholder="예) 4.0" />
-            <div class="hint">NOI(순영업소득) = 매입가 × Cap Rate</div>
+            <label>월 임대료 (엔)</label>
+            <input id="rentM" type="text" inputmode="numeric" pattern="[0-9,¥]*" placeholder="예) 350,000" />
           </div>
           <div>
-            <label>감가상각 (연간, 엔) <span class="k">(선택)</span></label>
-            <input id="depr" type="text" inputmode="numeric" pattern="[0-9,]*" placeholder="예) 2,000,000" />
-            <div class="hint">현금유출 없음(세무상 비용 처리)</div>
+            <label>관리비 (% / 임대료 기준)</label>
+            <input id="mgmtPct" type="text" inputmode="decimal" placeholder="예) 5" />
           </div>
         </div>
 
         <div class="row">
           <div>
-            <label>법인세율 (%, 기본 30)</label>
-            <input id="corpTax" type="text" inputmode="decimal" placeholder="예) 30" value="30" />
+            <label>고정자산세 (% / 매입가 기준)</label>
+            <input id="fixedTaxPct" type="text" inputmode="decimal" placeholder="예) 0.5" />
           </div>
           <div>
-            <label>고정/기타 운영비 (연간, 엔) <span class="k">(선택)</span></label>
-            <input id="opex" type="text" inputmode="numeric" pattern="[0-9,]*" placeholder="예) 1,500,000" />
+            <label>기타 초년도 비용 (% / 매입가)</label>
+            <input id="initCostPct" type="text" inputmode="decimal" placeholder="예) 0.5" />
+            <div class="hint">대출수수료·인지세 등(취득세 별도 계산)</div>
+          </div>
+        </div>
+
+        <h2 style="margin-top:14px;">취득세(자동)</h2>
+        <div class="row">
+          <div>
+            <label>평가비율 (% / 매입가 대비)</label>
+            <input id="assessRatio" type="text" inputmode="decimal" placeholder="예) 50" />
+            <div class="hint">고정자산세 기준가 추정</div>
+          </div>
+          <div>
+            <label>취득세율 (%)</label>
+            <input id="acqTaxRate" type="text" inputmode="decimal" placeholder="예) 3" />
+            <div class="hint">과세표준 × 세율</div>
           </div>
         </div>
 
@@ -110,156 +130,254 @@
         </div>
       </div>
 
+      <!-- 결과 -->
       <div class="card">
         <h2>결과</h2>
+
         <div class="kpi">
           <div class="item">
             <div class="label">대출금액</div>
             <div class="val" id="loanAmount">-</div>
           </div>
           <div class="item">
-            <div class="label">자기자본</div>
-            <div class="val" id="equity">-</div>
+            <div class="label">초기 자기자본(비용 포함)</div>
+            <div class="val" id="equityInit">-</div>
           </div>
           <div class="item">
-            <div class="label">월 상환액(원리금)</div>
-            <div class="val" id="monthlyPay">-</div>
-          </div>
-          <div class="item">
-            <div class="label">1년차 이자 합계</div>
+            <div class="label">연간 이자(1년차)</div>
             <div class="val" id="intYear1">-</div>
+          </div>
+          <div class="item">
+            <div class="label">연간 순이익</div>
+            <div class="val" id="netAnnual">-</div>
           </div>
         </div>
 
         <div class="sep"></div>
 
-        <div class="result">
-          <div><b>NOI(순영업소득):</b> <span id="noi">-</span></div>
-          <div><b>세전이익(회계):</b> <span id="pretax">-</span> <span class="k">= NOI − 이자 − 감가상각 − 기타 운영비</span></div>
-          <div><b>법인세(추정):</b> <span id="tax">-</span></div>
-          <div><b>세후 순이익(현금기준):</b> <span id="afterTax">-</span> <span class="k">= NOI − 이자 − 기타 운영비 − 세금</span></div>
-          <div><b>세후 배당률(자기자본 대비):</b> <span id="yield">-</span></div>
+        <div class="kpi">
+          <div class="item">
+            <div class="label">연간 투자수익률</div>
+            <div class="val" id="roiAnnual">-</div>
+          </div>
+          <div class="item">
+            <div class="label">보유기간 이자 합계</div>
+            <div class="val" id="intHold">-</div>
+          </div>
+          <div class="item">
+            <div class="label">매도시 남은 원금</div>
+            <div class="val" id="remPrincipal">-</div>
+          </div>
+          <div class="item">
+            <div class="label">매도 후 수익률(누적)</div>
+            <div class="val" id="roiExit">-</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="kpi">
+          <div class="item">
+            <div class="label">취득세(초년도)</div>
+            <div class="val" id="acqTaxOut">-</div>
+          </div>
+          <div class="item">
+            <div class="label">기타 초년도 비용</div>
+            <div class="val" id="initOthersOut">-</div>
+          </div>
+          <div class="item">
+            <div class="label">영업현금흐름(연)</div>
+            <div class="val" id="operCF">-</div>
+          </div>
+          <div class="item">
+            <div class="label">연 임대료</div>
+            <div class="val" id="rentY">-</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="hint">
+          • 취득세 = max(0, 매입가×평가비율 − <b>12,000,000</b>) × 취득세율 (신축 25년 선택 시 공제 적용)<br/>
+          • 연간 순이익 = (연 임대료 − 관리비 − 고정자산세) − (연 이자, 1년차 기준)<br/>
+          • 매도 후 수익률(누적) = [보유기간 순이익 합계 + (매도가 − 매도비용 − 잔여원금)] ÷ 초기 자기자본
         </div>
 
         <div class="footer">
-          ※ 월 상환액은 원리금균등 가정. 세전이익은 회계상 개념(감가상각 포함), 세후 순이익은 현금 흐름 관점(감가상각 제외).  
-          ※ 오프라인 전용: 외부 스크립트/폰트 미사용, iOS 사파리 호환을 위해 소수점 입력은 점(.) 사용 권장.
+          모든 수치는 단순화된 추정치입니다(공실·세금 세부·감가상각/법인세 등 미반영). 실제 계약 전에는 별도 검토가 필요합니다.
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // 숫자 파싱 (쉼표/공백 제거, 소수점 허용)
-    function parseKR(n) {
-      if (!n) return 0;
-      const s = String(n).replace(/[,\s]/g, '');
+    // 숫자 파싱 (쉼표/공백/통화기호 제거)
+    function parseKR(n){
+      if(!n) return 0;
+      const s = String(n).replace(/[,\s¥₩]/g,'');
       const v = Number(s);
       return isFinite(v) ? v : 0;
     }
-
-    // 포맷터 (ko-KR, Intl 미지원시 폴백)
-    function fmt(n) {
-      if (!isFinite(n)) return '-';
-      try {
-        return new Intl.NumberFormat('ko-KR').format(Math.round(n));
-      } catch (e) {
-        return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      }
+    // 통화/퍼센트 포맷
+    function fmt(n){
+      if(!isFinite(n)) return '-';
+      try{ return new Intl.NumberFormat('ko-KR').format(Math.round(n)); }
+      catch{ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
     }
-    function fmtPct(x) {
-      if (!isFinite(x)) return '-';
-      return (Math.round(x * 1000) / 10).toFixed(1) + '%';
+    function fmtPct(x){
+      if(!isFinite(x)) return '-';
+      return (Math.round(x*1000)/10).toFixed(1) + '%';
     }
 
-    // 원리금균등 월 상환액
-    function monthlyPayment(principal, annualRatePct, years) {
-      if (principal <= 0 || years <= 0) return 0;
-      const r = (annualRatePct / 100) / 12;
-      const n = years * 12;
-      if (r === 0) return principal / n;
-      return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    }
-
-    function calcYear1Interest(principal, annualRatePct, years) {
-      // 1년차(12개월) 총 이자
-      const pay = monthlyPayment(principal, annualRatePct, years);
-      const r = (annualRatePct / 100) / 12;
-      let bal = principal, intSum = 0;
-      for (let m=0; m<12; m++) {
+    // 원금균등 상환 스케줄(월단위)
+    function buildEqualPrincipalSchedule(loan, annualRatePct, years){
+      const r = (annualRatePct/100)/12;
+      const n = Math.max(1, Math.round(years*12));
+      const pmtPrincipal = loan / n;
+      let bal = loan;
+      const months = [];
+      for(let m=1; m<=n; m++){
         const interest = bal * r;
-        const principalPay = Math.min(pay - interest, bal);
-        intSum += interest;
+        const principalPay = (m === n) ? bal : pmtPrincipal; // 마지막 달 보정
         bal = Math.max(0, bal - principalPay);
-        if (bal <= 0) break;
+        months.push({interest, principal: principalPay, balance: bal});
       }
-      return intSum;
+      return months;
+    }
+    function sumInterestByYear(months, yearIndex){
+      const start = (yearIndex-1)*12;
+      const end = Math.min(start+12, months.length);
+      let s = 0;
+      for(let i=start; i<end; i++) s += months[i].interest;
+      return s;
+    }
+    function remainingPrincipalAt(months, holdYears){
+      const idx = Math.min(months.length, Math.round(holdYears*12));
+      if(idx<=0) return months.length ? months[0].balance + months[0].principal : 0;
+      return months[Math.max(0, idx-1)].balance;
     }
 
     function val(id){ return document.getElementById(id).value.trim(); }
     function setTxt(id, t){ document.getElementById(id).textContent = t; }
+    function termYears(){ 
+      const el = document.querySelector('input[name="term"]:checked');
+      return el ? parseInt(el.value,10) : 25; 
+    }
 
-    document.getElementById('calcBtn').addEventListener('click', () => {
-      const purchasePrice = parseKR(val('purchasePrice'));
-      const ltv = parseKR(val('ltv'));
-      const rate = parseKR(val('rate'));
-      const years = parseKR(val('years'));
-      const cap = parseKR(val('cap'));
-      const depr = parseKR(val('depr'));
-      const corpTax = parseKR(val('corpTax') || '30');
-      const opex = parseKR(val('opex'));
+    function calculate(){
+      // 입력값
+      const P   = parseKR(val('purchasePrice'));        // 매입가
+      const LTV = parseFloat(val('ltv')) || 0;
+      const rA  = parseFloat(val('rate')) || 0;
+      const rentM = parseKR(val('rentM'));
+      const mgmtPct = parseFloat(val('mgmtPct')) || 0;
+      const fixedTaxPct = parseFloat(val('fixedTaxPct')) || 0;
+      const initCostPct = parseFloat(val('initCostPct')) || 0;
+      const assessRatio = parseFloat(val('assessRatio')) || 0;
+      const acqTaxRate = parseFloat(val('acqTaxRate')) || 0;
 
-      if (purchasePrice <= 0 || ltv < 0 || rate < 0 || years <= 0 || cap < 0) {
-        alert('입력값을 확인하세요. 매입가/대출기간은 양수, 비율 항목은 0 이상이어야 합니다.');
+      // 필수 검증
+      if(P<=0 || LTV<0 || rA<0 || rentM<0 || mgmtPct<0 || fixedTaxPct<0 || initCostPct<0 || assessRatio<0 || acqTaxRate<0){
+        alert('입력값을 확인하세요. 음수는 허용되지 않습니다.');
         return;
       }
 
-      const loanAmount = purchasePrice * (ltv / 100);
-      const equity = purchasePrice - loanAmount;
+      const years = termYears();
+      const isNew = (years === 25); // 신축(분양) 선택 여부
+      const loan = P * (LTV/100);
 
-      const noi = purchasePrice * (cap / 100);
-      const monthly = monthlyPayment(loanAmount, rate, years);
-      const intY1 = calcYear1Interest(loanAmount, rate, years);
+      // 취득세 계산
+      const assessed = P * (assessRatio/100);
+      const deduction = isNew ? 12000000 : 0; // 신축 1,200만엔 공제
+      const taxableBase = Math.max(0, assessed - deduction);
+      const acqTax = taxableBase * (acqTaxRate/100);
 
-      // 회계상 세전이익: NOI - 이자(연간) - 감가상각(연간) - 기타운영비
-      const pretax = noi - intY1 - depr - opex;
-      const tax = Math.max(0, pretax) * (corpTax / 100);
+      // 기타 초년도 비용 (비율)
+      const initOthers = P * (initCostPct/100);
 
-      // 현금 관점 세후 순이익: NOI - 이자 - 기타운영비 - 세금 (감가상각 제외)
-      const afterTax = noi - intY1 - opex - tax;
+      // 초기 자기자본(현금투입)
+      const equityInit = (P - loan) + acqTax + initOthers;
 
-      const yieldEq = equity > 0 ? (afterTax / equity) : 0;
+      // 연간 현금흐름 항목
+      const rentY = rentM * 12;
+      const mgmtFeeY = rentY * (mgmtPct/100);
+      const fixedTaxY = P * (fixedTaxPct/100);
+      const operCF = rentY - mgmtFeeY - fixedTaxY; // 영업(이자 전)
 
-      setTxt('loanAmount', fmt(loanAmount) + ' 엔');
-      setTxt('equity', fmt(equity) + ' 엔');
-      setTxt('monthlyPay', fmt(monthly) + ' 엔/월');
-      setTxt('intYear1', fmt(intY1) + ' 엔');
+      // 상환 스케줄 & 이자
+      const sched = buildEqualPrincipalSchedule(loan, rA, years);
+      const intY1 = sumInterestByYear(sched, 1);
+      const netAnnual = operCF - intY1;
+      const roiAnnual = equityInit>0 ? (netAnnual / equityInit) : NaN;
 
-      setTxt('noi', fmt(noi) + ' 엔');
-      setTxt('pretax', fmt(pretax) + ' 엔');
-      setTxt('tax', fmt(tax) + ' 엔');
-      setTxt('afterTax', fmt(afterTax) + ' 엔');
-      setTxt('yield', isFinite(yieldEq) ? fmtPct(yieldEq) : '-');
-    });
+      // 사용자 입력 없을 수 있는 매도 파트는 결과 카드엔 제외(필수 아님) → 아래 확장 변수로 지원 가능
+      // 보유기간/매도 관련은 기존 버전처럼 필요 시 추가 입력란 만들면 됨.
+
+      // 기본 표시
+      setTxt('loanAmount', '¥ ' + fmt(loan));
+      setTxt('equityInit', '¥ ' + fmt(equityInit));
+      setTxt('intYear1', '¥ ' + fmt(intY1));
+      setTxt('netAnnual', '¥ ' + fmt(netAnnual));
+
+      setTxt('roiAnnual', isFinite(roiAnnual) ? fmtPct(roiAnnual) : '-');
+      setTxt('acqTaxOut', '¥ ' + fmt(acqTax));
+      setTxt('initOthersOut', '¥ ' + fmt(initOthers));
+      setTxt('operCF', '¥ ' + fmt(operCF));
+      setTxt('rentY', '¥ ' + fmt(rentY));
+
+      // 선택적으로 매도 계산 (입력된 경우에만)
+      const holdY = parseInt(val('holdY')||'',10);
+      const salePrice = parseKR(val('salePrice'));
+      const saleCostPct = parseFloat(val('saleCostPct')) || NaN;
+
+      if(!isNaN(holdY) && holdY>0 && salePrice>0 && !isNaN(saleCostPct)){
+        let interestHold = 0;
+        for(let y=1; y<=Math.min(years, holdY); y++){
+          interestHold += sumInterestByYear(sched, y);
+        }
+        const netAnnualHoldSum = operCF * holdY - interestHold;
+
+        const saleCost = salePrice * (saleCostPct/100);
+        const remPrin = remainingPrincipalAt(sched, holdY);
+        const exitCash = (salePrice - saleCost) - remPrin;
+        const totalToEquity = netAnnualHoldSum + exitCash;
+        const roiExit = equityInit>0 ? (totalToEquity / equityInit) : NaN;
+
+        setTxt('intHold', '¥ ' + fmt(interestHold));
+        setTxt('remPrincipal', '¥ ' + fmt(remPrin));
+        setTxt('roiExit', isFinite(roiExit) ? fmtPct(roiExit) : '-');
+      } else {
+        setTxt('intHold','-'); setTxt('remPrincipal','-'); setTxt('roiExit','-');
+      }
+    }
+
+    document.getElementById('calcBtn').addEventListener('click', calculate);
 
     document.getElementById('resetBtn').addEventListener('click', () => {
-      ['purchasePrice','ltv','rate','years','cap','depr','corpTax','opex'].forEach(id => document.getElementById(id).value = '');
-      ['loanAmount','equity','monthlyPay','intYear1','noi','pretax','tax','afterTax','yield']
-        .forEach(id => setTxt(id, '-'));
-      document.getElementById('corpTax').value = '30';
+      // 입력 모두 비우고 결과 리셋
+      ['purchasePrice','ltv','rate','rentM','mgmtPct','fixedTaxPct','initCostPct','assessRatio','acqTaxRate','holdY','salePrice','saleCostPct']
+        .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+      ['loanAmount','equityInit','intYear1','netAnnual','roiAnnual','intHold','remPrincipal','roiExit','operCF','acqTaxOut','initOthersOut','rentY']
+        .forEach(id => setTxt(id,'-'));
+      // 상환기간 기본값(신축 25년)으로 되돌리기
+      const term25 = document.querySelector('input[name="term"][value="25"]');
+      if(term25) term25.checked = true;
     });
 
-    // iOS: 소수점/숫자만 허용 (간단한 가드)
-    Array.from(document.querySelectorAll('input[inputmode="numeric"], input[pattern]')).forEach(el=>{
-      el.addEventListener('input', e=>{
-        e.target.value = e.target.value.replace(/[^0-9.,\s]/g,'');
+    // 숫자 입력 가드
+    (function guard(){
+      const num = q => document.querySelectorAll(q);
+      num('input[inputmode="numeric"], input[pattern]').forEach(el=>{
+        el.addEventListener('input', e=>{
+          e.target.value = e.target.value.replace(/[^0-9,¥\s]/g,'');
+        });
       });
-    });
-    Array.from(document.querySelectorAll('input[inputmode="decimal"]')).forEach(el=>{
-      el.addEventListener('input', e=>{
-        e.target.value = e.target.value.replace(/[^0-9.\s]/g,'');
+      num('input[inputmode="decimal"]').forEach(el=>{
+        el.addEventListener('input', e=>{
+          e.target.value = e.target.value.replace(/[^0-9.\s]/g,'');
+        });
       });
-    });
+    })();
   </script>
 </body>
 </html>
